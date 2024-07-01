@@ -1,15 +1,24 @@
-# inventario-ti
 
-To install dependencies:
+# React SSR Template for Bun
 
-```bash
-bun install
+This is a template for Bun.sh.
+# Installation
+
+To install, run:
+
+```sh
+bun create MolikoDeveloper/react-ssr-bun
+```
+This will create a folder named `react-ssr-bun`.
+
+Navigate to the newly created folder:
+
+```sh 
+cd react-ssr-bun
 ```
 
-To run:
+To start the server on port 3000, use:
 
-```bash
-bun run server.tsx
+```sh
+bun server.ts
 ```
-
-This project was created using `bun init` in bun v1.1.17. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
