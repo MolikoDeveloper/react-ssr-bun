@@ -1,0 +1,19 @@
+{
+  "name": "react-ssr-bun",
+  "module": "server.tsx",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "^18.0.37",
+    "@types/react-dom": "^18.0.11"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0",
+    "react": "next",
+    "react-dom": "next",
+    "web-vitals": "^3.0.3"
+  },
+  "dependencies": {
+    "react-helmet-async": "^2.0.5"
+  }
+}
