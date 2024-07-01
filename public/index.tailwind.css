@@ -558,10 +558,6 @@ video {
   display: flex;
 }
 
-.max-w-full {
-  max-width: 100%;
-}
-
 .border {
   border-width: 1px;
 }

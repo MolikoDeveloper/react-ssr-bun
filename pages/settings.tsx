@@ -1,5 +1,5 @@
-import { Counter } from "../Components/Counter";
-import { Layout } from "../Components/Layout";
+import { Counter } from "../components/Counter";
+import { Layout } from "../components/Layout";
 
 export default function () {
   return (

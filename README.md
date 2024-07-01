@@ -17,8 +17,19 @@ Navigate to the newly created folder:
 cd react-ssr-bun
 ```
 
+Install packages with:
+
+```sh
+bun i
+```
+
+To compile the styles, use:
+```sh
+bun style
+```
+
 To start the server on port 3000, use:
 
 ```sh
-bun start
+bun dev
 ```

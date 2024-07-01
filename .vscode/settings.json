@@ -1,0 +1,7 @@
+{
+    "explorer.autoRevealExclude": {
+        "**/components": true,
+        "**/pages": true
+    },
+    "explorer.sortOrder": "modified"
+}

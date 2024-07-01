@@ -1,15 +1,14 @@
 import * as path from 'path';
 import { statSync, existsSync, readFileSync } from 'fs';
 import { renderToReadableStream } from 'react-dom/server';
-import Security from './src/Security';
+import Security from './Security';
 import { rm } from 'node:fs/promises'
 
 const PROJECT_ROOT = import.meta.dir;
-const SRC_DIR = path.resolve(PROJECT_ROOT, 'src');
 const PUBLIC_DIR = path.resolve(PROJECT_ROOT, 'public');
 const BUILD_DIR = path.resolve(PROJECT_ROOT, '.build');
 const BUILD_PAGE_DIR = path.resolve(BUILD_DIR, 'pages');
-const PAGE_DIR = path.resolve(SRC_DIR, 'pages');
+const PAGE_DIR = path.resolve(PROJECT_ROOT, 'pages');
 
 const srcRouter = new Bun.FileSystemRouter({
     dir: PAGE_DIR,
@@ -23,7 +22,7 @@ await rm(BUILD_DIR, {
 })
 
 await Bun.build({
-    entrypoints: [path.join(SRC_DIR, 'hydrate.tsx'), ...Object.values(srcRouter.routes)],
+    entrypoints: [path.join(PROJECT_ROOT, 'hydrate.tsx'), ...Object.values(srcRouter.routes)],
     outdir: BUILD_DIR,
     target: 'browser',
     splitting: true,
