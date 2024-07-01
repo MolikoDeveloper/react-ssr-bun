@@ -1,4 +1,19 @@
-import Sidebar from "./Sidebar";
+import Sidebar, { type Item } from "./Sidebar";
+
+const items: Item[] = [
+    {
+        Name: "Home",
+        href: "/"
+    },
+    {
+        Name: "Settings",
+        href: "/settings"
+    },
+    {
+        Name: "Test",
+        href: "/test"
+    }
+]
 
 export function Layout(props: { title: string; children: React.ReactNode }) {
     return (
@@ -15,7 +30,7 @@ export function Layout(props: { title: string; children: React.ReactNode }) {
                 <title>{props.title}</title>
             </head>
             <body>
-                <Sidebar></Sidebar>
+                <Sidebar items={items}></Sidebar>
                 <div className="App E" role="main">
                     <article className="App-article">
                         <div style={{ height: "30px" }}></div>

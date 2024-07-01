@@ -571,22 +571,9 @@ video {
   background-color: rgb(69 10 10 / var(--tw-bg-opacity));
 }
 
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-}
-
-.font-bold {
-  font-weight: 700;
-}
-
 .text-red-50 {
   --tw-text-opacity: 1;
   color: rgb(254 242 242 / var(--tw-text-opacity));
-}
-
-.underline {
-  text-decoration-line: underline;
 }
 
 body {
