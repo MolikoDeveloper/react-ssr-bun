@@ -13,7 +13,7 @@ export default function (props: { items: Item[] }) {
             {props.items.map(item => {
 
                 return (
-                    <div className="max-w-full bg-red-950 text-red-50">
+                    <div className="pos- bg-red-950 text-red-50">
                         <a href={item.href}>{item.Name}</a>
                     </div>
                 )
