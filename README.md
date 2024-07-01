@@ -20,5 +20,5 @@ cd react-ssr-bun
 To start the server on port 3000, use:
 
 ```sh
-bun server.ts
+bun start
 ```
