@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 
 export function Layout(props: { title: string; children: React.ReactNode }) {
@@ -12,8 +11,8 @@ export function Layout(props: { title: string; children: React.ReactNode }) {
                 <meta name="description" content="Template of SSR with Bun" />
                 <link rel="apple-touch-icon" href="/logo192.png" />
                 <link rel="manifest" href="/manifest.json" />
+                <link rel="stylesheet" href="/index.tailwind.css" />
                 <title>{props.title}</title>
-                <link rel="stylesheet" href="/index.css" />
             </head>
             <body>
                 <Sidebar></Sidebar>

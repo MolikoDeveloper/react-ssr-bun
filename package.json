@@ -5,7 +5,8 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@types/react": "^18.0.37",
-    "@types/react-dom": "^18.0.11"
+    "@types/react-dom": "^18.0.11",
+    "tailwindcss": "^3.4.4"
   },
   "peerDependencies": {
     "typescript": "^5.0.0",
@@ -15,5 +16,8 @@
   },
   "dependencies": {
     "react-helmet-async": "^2.0.5"
+  },
+  "scripts": {
+    "start": "bunx tailwindcss -i ./public/index.css -o ./public/index.tailwind.css && bun server.tsx"
   }
 }
