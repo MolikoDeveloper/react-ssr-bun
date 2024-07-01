@@ -1,5 +1,5 @@
 {
-  "name": "react-ssr-bun",
+  "name": "@MolikoDeveloper/react-ssr-bun",
   "module": "server.tsx",
   "type": "module",
   "devDependencies": {
