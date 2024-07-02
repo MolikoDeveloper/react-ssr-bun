@@ -3,5 +3,12 @@
         "**/components": true,
         "**/pages": true
     },
-    "explorer.sortOrder": "modified"
+    "explorer.sortOrder": "modified",
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": true,
+    "explorer.fileNesting.patterns": {
+        "*.tsx": "${capture}.ts, ${capture}.css, ${capture}.*.tsx",
+        "*.css": "*.tailwind.css, *.module.css"
+    },
+    "explorer.excludeGitIgnore": false
 }

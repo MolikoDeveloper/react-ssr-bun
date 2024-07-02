@@ -1,17 +1,24 @@
 import Sidebar, { type Item } from "./Sidebar";
+import DocumentCheckSolid from "./heroicons/document-check.solid";
+import HomeSolid from "./heroicons/home.solid";
+import WrenchSolid from "./heroicons/wrench.solid";
+
 
 const items: Item[] = [
     {
         Name: "Home",
-        href: "/"
+        href: "/",
+        icon: <HomeSolid color="white" />
     },
     {
         Name: "Settings",
-        href: "/settings"
+        href: "/settings",
+        icon: <WrenchSolid color="white" />
     },
     {
         Name: "Test",
-        href: "/test"
+        href: "/test",
+        icon: <DocumentCheckSolid color="white" />
     }
 ]
 
@@ -31,11 +38,9 @@ export function Layout(props: { title: string; children: React.ReactNode }) {
             </head>
             <body>
                 <Sidebar items={items}></Sidebar>
-                <div className="App E" role="main">
-                    <article className="App-article">
-                        <div style={{ height: "30px" }}></div>
-                        <h3>{props.title}</h3>
-                        <div style={{ height: "30px" }}></div>
+                <div className="ml-48" role="main">
+                    <article className="bg-gray-900 min-h-screen flex flex-col items-center justify-center text-base text-white">
+                        <h3 className="text-5xl m-0 mt-7 mb-7">{props.title}</h3>
                         {props.children}
                     </article>
                 </div>

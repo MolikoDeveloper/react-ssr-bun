@@ -1,19 +1,25 @@
+import type { ReactNode } from "react"
+import GlobeAlt from "./heroicons/globe-alt"
 
 
 export interface Item {
     Name: string,
-    href: string
+    href: string,
+    icon?: ReactNode | any
 }
 
 export default function (props: { items: Item[] }) {
-
-
     return (
-        <div>
-            {props.items.map((item,index) => {
-
+        <div className="w-48 absolute top-0 left-0 bg-background text-white h-full">
+            <div className="grid grid-flow-col p-1 text-2xl content-center">
+                <GlobeAlt color="white" size='20' />
+                REACT SSR
+            </div>
+            <div className=" border-b-2 border-b-slate-600 mt-4 mb-4"></div>
+            {props.items.map((item, index) => {
                 return (
-                    <div key={index} className="pos- bg-red-950 text-red-50">
+                    <div key={index} className="ml-2 mr-2 mt-1 p-1 grid grid-flow-col text-left rounded-lg" style={{ color: item.icon.props.color }}>
+                        {item.icon ? item.icon : null}
                         <a href={item.href}>{item.Name}</a>
                     </div>
                 )
