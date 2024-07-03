@@ -104,7 +104,17 @@ const host = Bun.serve({
         headers.set('X-Content-Type-Options', 'nosniff');
         headers.set('X-Frame-Options', 'DENY');
         headers.set('X-XSS-Protection', '1; mode=block');
+        headers.set('Set-Cookie', `Session=server`);
 
+        console.log(request.headers.getAll('Set-Cookie'));
+        if (request.headers.getAll('Set-Cookie')) {
+            //return Response.redirect('/settings', 301)
+        }
+        /*
+                if (pathname === "/login") {
+                    //validate if the user if
+                }
+        */
         const match = srcRouter.match(request);
 
         if (match) {
