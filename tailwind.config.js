@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+const plugin = require('tailwindcss/plugin');
+
 export default {
   content: [
     "./components/**/*.{tsx,ts,js,jsx}",
@@ -11,6 +14,10 @@ export default {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function({ addVariant }) {
+      addVariant('active', ['&:active', '&.router-link-active'])
+    })
+  ],
 }
 

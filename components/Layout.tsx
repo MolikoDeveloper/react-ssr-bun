@@ -3,7 +3,6 @@ import DocumentCheckSolid from "./heroicons/document-check.solid";
 import HomeSolid from "./heroicons/home.solid";
 import WrenchSolid from "./heroicons/wrench.solid";
 
-
 const items: Item[] = [
     {
         Name: "Home",
@@ -38,7 +37,7 @@ export function Layout(props: { title: string; children: React.ReactNode }) {
             </head>
             <body>
                 <Sidebar items={items}></Sidebar>
-                <div className="ml-48" role="main">
+                <div className="ml-48" id="App" role="main">
                     <article className="bg-gray-900 min-h-screen flex flex-col items-center justify-center text-base text-white">
                         <h3 className="text-5xl m-0 mt-7 mb-7">{props.title}</h3>
                         {props.children}
@@ -46,6 +45,5 @@ export function Layout(props: { title: string; children: React.ReactNode }) {
                 </div>
             </body>
         </html>
-
     );
 }

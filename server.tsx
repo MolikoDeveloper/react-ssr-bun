@@ -3,6 +3,7 @@ import { statSync, existsSync, readFileSync } from 'fs';
 import { renderToReadableStream } from 'react-dom/server';
 import Security from './Security';
 import { rm } from 'node:fs/promises'
+import { StaticRouter } from 'react-router-dom/server';
 
 const PROJECT_ROOT = import.meta.dir;
 const PUBLIC_DIR = path.resolve(PROJECT_ROOT, 'public');
@@ -93,8 +94,10 @@ function getContentType(filePath: string) {
 const host = Bun.serve({
     async fetch(request, server) {
         await Security(request, server);
-
         if (server.upgrade(request)) return;
+
+        const pathname = new URL(request.url).pathname
+
 
         const headers = new Headers();
         headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self';");
@@ -112,7 +115,7 @@ const host = Bun.serve({
             }
 
             const Component = await import(match.filePath);
-            const stream = await renderToReadableStream(<Component.default />, {
+            const stream = await renderToReadableStream(<StaticRouter location={pathname}><Component.default /></StaticRouter>, {
                 bootstrapScriptContent: `globalThis.PATH_TO_PAGE = "/${builtMatch.src}";`,
                 bootstrapModules: ['/hydrate.js'],
             });

@@ -1,11 +1,13 @@
-export default function ({ color = "#000000" }: { color?: string }) {
+import type { HeroIconProps } from "./horoicons";
+
+export default function (props: HeroIconProps) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
-            stroke={color}
+            stroke={props.color}
             className="size-6">
             <path
                 strokeLinecap="round"

@@ -3,7 +3,7 @@
         "**/components": true,
         "**/pages": true
     },
-    "explorer.sortOrder": "modified",
+    "explorer.sortOrder": "default",
     "explorer.fileNesting.enabled": true,
     "explorer.fileNesting.expand": true,
     "explorer.fileNesting.patterns": {
