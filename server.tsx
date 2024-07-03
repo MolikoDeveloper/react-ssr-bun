@@ -111,6 +111,7 @@ const host = Bun.serve({
             //return Response.redirect('/settings', 301)
         }
         /*
+            //make /Login with <form></form>
                 if (pathname === "/login") {
                     //validate if the user if
                 }
