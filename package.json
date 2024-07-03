@@ -22,6 +22,6 @@
   "scripts": {
     "style": "bunx tailwindcss -i ./public/index.css -o ./public/index.tailwind.css",
     "dev": " bun server.tsx",
-    "watch": " bun --watch server.tsx"
+    "watch": "bun style && bun --watch server.tsx"
   }
 }

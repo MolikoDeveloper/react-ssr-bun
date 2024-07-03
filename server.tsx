@@ -96,8 +96,7 @@ const host = Bun.serve({
         await Security(request, server);
         if (server.upgrade(request)) return;
 
-        const pathname = new URL(request.url).pathname
-
+        const pathname = new URL(request.url).pathname;
 
         const headers = new Headers();
         headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self';");
@@ -156,7 +155,7 @@ const host = Bun.serve({
         });
     },
     websocket: {
-        open(ws) { },
+        open(ws) { ws.send('Hola!') },
         close(ws) { },
         message(ws, message) { },
     }

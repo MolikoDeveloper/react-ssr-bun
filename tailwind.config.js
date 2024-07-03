@@ -15,7 +15,7 @@ export default {
     },
   },
   plugins: [
-    plugin(function({ addVariant }) {
+    plugin(function ({ addVariant }) {
       addVariant('active', ['&:active', '&.router-link-active'])
     })
   ],

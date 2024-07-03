@@ -33,6 +33,7 @@ export function Layout(props: { title: string; children: React.ReactNode }) {
                 <link rel="apple-touch-icon" href="/logo192.png" />
                 <link rel="manifest" href="/manifest.json" />
                 <link rel="stylesheet" href="/index.tailwind.css" />
+                <script type="module" src="/debug.js" async />
                 <title>{props.title}</title>
             </head>
             <body>
