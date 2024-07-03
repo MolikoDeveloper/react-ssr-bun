@@ -26,8 +26,8 @@ export default function (props: { items: Item[] }) {
                         key={index}
                         href={item.href}
                         className={`ml-2 mr-2 mt-1 p-1 grid grid-flow-col
-                        text-left rounded-lg hover:bg-slate-600
-                        ${active ? 'text-red-500':''}`}
+                        text-left rounded-lg hover:bg-slate-600 transition
+                        ${active ? 'bg-slate-800':''}`}
                     >
                         {item.icon ? item.icon : null}
                         {item.Name}

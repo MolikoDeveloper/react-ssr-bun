@@ -15,8 +15,8 @@ const items: Item[] = [
         icon: <WrenchSolid color="white" />
     },
     {
-        Name: "Test",
-        href: "/test",
+        Name: "Counter",
+        href: "/counter",
         icon: <DocumentCheckSolid color="white" />
     }
 ]
