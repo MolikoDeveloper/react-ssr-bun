@@ -96,74 +96,89 @@ const host = Bun.serve({
         await Security(request, server);
         if (server.upgrade(request)) return;
 
-        const pathname = new URL(request.url).pathname;
+        try {
+            const pathname = new URL(request.url).pathname;
 
-        const headers = new Headers();
-        headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self';");
-        headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
-        headers.set('X-Content-Type-Options', 'nosniff');
-        headers.set('X-Frame-Options', 'DENY');
-        headers.set('X-XSS-Protection', '1; mode=block');
-        headers.set('Set-Cookie', `Session=server`);
+            const headers = new Headers();
+            headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self';");
+            headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+            headers.set('X-Content-Type-Options', 'nosniff');
+            headers.set('X-Frame-Options', 'DENY');
+            headers.set('X-XSS-Protection', '1; mode=block');
+            headers.set('Set-Cookie', `Session=server`);
 
-        console.log(request.headers.getAll('Set-Cookie'));
-        if (request.headers.getAll('Set-Cookie')) {
-            //return Response.redirect('/settings', 301)
-        }
-        /*
-            //make /Login with <form></form>
-                if (pathname === "/login") {
-                    //validate if the user if
+            const match = srcRouter.match(request);
+
+            if (match) {
+                const builtMatch = buildRouter.match(request);
+                if (!builtMatch) {
+                    return new Response('Error 500', { status: 500, headers });
                 }
-        */
-        const match = srcRouter.match(request);
 
-        if (match) {
-            const builtMatch = buildRouter.match(request);
-            if (!builtMatch) {
-                return new Response('Error 500', { status: 500, headers });
+                const GetCookie = (name: string) => {
+                    return request.headers.get('cookie')?.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || undefined;
+                }
+
+                if (!GetCookie('Session')) {
+                    return Response.redirect('/login')
+                }
+                
+                //const cookie = (name:string) { return request.headers.get("cookie")?.match('(?:^|;)\\s*'+name.trim()+'\\s*=\\s*([^;]*?)\\s*(?:;|$)')||[])}
+                //.match('(?:^|;)\\s*'+name.trim()+'\\s*=\\s*([^;]*?)\\s*(?:;|$)')||[])[1];
+                //console.log(cookie)
+
+                /*
+                    //make /Login with <form></form>
+                        if (pathname === "/login") {
+                            //validate if the user if
+                        }
+                */
+
+                const Component = await import(match.filePath);
+                const stream = await renderToReadableStream(<StaticRouter location={pathname}><Component.default /></StaticRouter>, {
+                    bootstrapScriptContent: `globalThis.PATH_TO_PAGE = "/${builtMatch.src}";`,
+                    bootstrapModules: ['/hydrate.js'],
+                });
+
+                headers.delete('Content-Security-Policy')
+                headers.set('Content-Type', 'text/html; charset=utf-8');
+                return new Response(stream, { status: 200, headers });
             }
 
-            const Component = await import(match.filePath);
-            const stream = await renderToReadableStream(<StaticRouter location={pathname}><Component.default /></StaticRouter>, {
-                bootstrapScriptContent: `globalThis.PATH_TO_PAGE = "/${builtMatch.src}";`,
-                bootstrapModules: ['/hydrate.js'],
+            let reqPath = new URL(request.url).pathname;
+            if (reqPath === '/') reqPath = '/index.html';
+
+            const publicResponse = serveFromDir({
+                directory: PUBLIC_DIR,
+                path: reqPath,
+                From: 'PublicResponse'
             });
 
-            headers.delete('Content-Security-Policy')
-            headers.set('Content-Type', 'text/html; charset=utf-8');
-            return new Response(stream, { status: 200, headers });
+            if (publicResponse) return publicResponse;
+
+            const buildResponse = serveFromDir({
+                directory: BUILD_DIR,
+                path: reqPath,
+                From: "buildResponse"
+            });
+            if (buildResponse) return buildResponse;
+
+            const pagesResponse = serveFromDir({
+                directory: BUILD_PAGE_DIR,
+                path: reqPath,
+                From: 'PagesResponse'
+            });
+            if (pagesResponse) return pagesResponse;
+
+            return new Response('ERROR 404: NOT FOUND', {
+                status: 404,
+                headers
+            });
         }
 
-        let reqPath = new URL(request.url).pathname;
-        if (reqPath === '/') reqPath = '/index.html';
-
-        const publicResponse = serveFromDir({
-            directory: PUBLIC_DIR,
-            path: reqPath,
-            From: 'PublicResponse'
-        });
-
-        if (publicResponse) return publicResponse;
-
-        const buildResponse = serveFromDir({
-            directory: BUILD_DIR,
-            path: reqPath,
-            From: "buildResponse"
-        });
-        if (buildResponse) return buildResponse;
-
-        const pagesResponse = serveFromDir({
-            directory: BUILD_PAGE_DIR,
-            path: reqPath,
-            From: 'PagesResponse'
-        });
-        if (pagesResponse) return pagesResponse;
-
-        return new Response('ERROR 404: NOT FOUND', {
-            status: 404,
-            headers
-        });
+        catch (e: any) {
+            return new Response("ERROR 502", { status: 502 });
+        }
     },
     websocket: {
         open(ws) { ws.send('Hola!') },
@@ -171,5 +186,8 @@ const host = Bun.serve({
         message(ws, message) { },
     }
 });
+
+
+
 
 console.log(`${(new Date).toLocaleTimeString()} http://${host.hostname}:${host.port}`);

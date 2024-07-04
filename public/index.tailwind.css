@@ -602,6 +602,10 @@ video {
   margin-top: 1.75rem;
 }
 
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
 .flex {
   display: flex;
 }
@@ -643,6 +647,10 @@ video {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.grid-flow-row {
+  grid-auto-flow: row;
 }
 
 .grid-flow-col {
@@ -735,6 +743,11 @@ video {
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
+}
+
+.text-black {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
 .text-white {
