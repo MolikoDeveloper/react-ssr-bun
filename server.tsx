@@ -97,7 +97,7 @@ const host = Bun.serve({
         if (server.upgrade(request)) return;
 
         try {
-            const pathname = new URL(request.url).pathname;
+            let reqPath = new URL(request.url).pathname;
 
             const headers = new Headers();
             headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self';");
@@ -105,7 +105,6 @@ const host = Bun.serve({
             headers.set('X-Content-Type-Options', 'nosniff');
             headers.set('X-Frame-Options', 'DENY');
             headers.set('X-XSS-Protection', '1; mode=block');
-            headers.set('Set-Cookie', `Session=server`);
 
             const match = srcRouter.match(request);
 
@@ -119,23 +118,16 @@ const host = Bun.serve({
                     return request.headers.get('cookie')?.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || undefined;
                 }
 
-                if (!GetCookie('Session')) {
-                    return Response.redirect('/login')
-                }
-                
-                //const cookie = (name:string) { return request.headers.get("cookie")?.match('(?:^|;)\\s*'+name.trim()+'\\s*=\\s*([^;]*?)\\s*(?:;|$)')||[])}
-                //.match('(?:^|;)\\s*'+name.trim()+'\\s*=\\s*([^;]*?)\\s*(?:;|$)')||[])[1];
-                //console.log(cookie)
-
                 /*
-                    //make /Login with <form></form>
-                        if (pathname === "/login") {
-                            //validate if the user if
-                        }
+                if (!GetCookie('Session')) {
+                
+                    return Response.redirect('/login')
+                    headers.set('Set-Cookie', `Session=server`);
+                }
                 */
 
                 const Component = await import(match.filePath);
-                const stream = await renderToReadableStream(<StaticRouter location={pathname}><Component.default /></StaticRouter>, {
+                const stream = await renderToReadableStream(<StaticRouter location={reqPath}><Component.default /></StaticRouter>, {
                     bootstrapScriptContent: `globalThis.PATH_TO_PAGE = "/${builtMatch.src}";`,
                     bootstrapModules: ['/hydrate.js'],
                 });
@@ -145,7 +137,6 @@ const host = Bun.serve({
                 return new Response(stream, { status: 200, headers });
             }
 
-            let reqPath = new URL(request.url).pathname;
             if (reqPath === '/') reqPath = '/index.html';
 
             const publicResponse = serveFromDir({
