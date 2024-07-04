@@ -16,7 +16,6 @@ const srcRouter = new Bun.FileSystemRouter({
     style: 'nextjs',
 });
 
-
 await rm(BUILD_DIR, {
     recursive: true,
     force: true,
@@ -106,6 +105,10 @@ const host = Bun.serve({
             headers.set('X-Frame-Options', 'DENY');
             headers.set('X-XSS-Protection', '1; mode=block');
 
+            const GetCookie = (name: string) => {
+                return request.headers.get('cookie')?.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || undefined;
+            }
+
             const match = srcRouter.match(request);
 
             if (match) {
@@ -114,22 +117,17 @@ const host = Bun.serve({
                     return new Response('Error 500', { status: 500, headers });
                 }
 
-                const GetCookie = (name: string) => {
-                    return request.headers.get('cookie')?.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || undefined;
+                if (!match.name.startsWith('/login') && !GetCookie('Session')) {
+                    return Response.redirect('/login', 302);
                 }
-
-                /*
-                if (!GetCookie('Session')) {
-                
-                    return Response.redirect('/login')
-                    headers.set('Set-Cookie', `Session=server`);
-                }
-                */
 
                 const Component = await import(match.filePath);
-                const stream = await renderToReadableStream(<StaticRouter location={reqPath}><Component.default /></StaticRouter>, {
+                const stream = await renderToReadableStream(
+                    <StaticRouter location={reqPath}>
+                        <Component.default />
+                    </StaticRouter>, {
                     bootstrapScriptContent: `globalThis.PATH_TO_PAGE = "/${builtMatch.src}";`,
-                    bootstrapModules: ['/hydrate.js'],
+                    bootstrapModules: ['/hydrate.js']
                 });
 
                 headers.delete('Content-Security-Policy')
@@ -137,7 +135,7 @@ const host = Bun.serve({
                 return new Response(stream, { status: 200, headers });
             }
 
-            if (reqPath === '/') reqPath = '/index.html';
+            //if (reqPath === '/') reqPath = '/index.html';
 
             const publicResponse = serveFromDir({
                 directory: PUBLIC_DIR,
@@ -152,6 +150,7 @@ const host = Bun.serve({
                 path: reqPath,
                 From: "buildResponse"
             });
+
             if (buildResponse) return buildResponse;
 
             const pagesResponse = serveFromDir({
@@ -159,14 +158,13 @@ const host = Bun.serve({
                 path: reqPath,
                 From: 'PagesResponse'
             });
+
             if (pagesResponse) return pagesResponse;
 
-            return new Response('ERROR 404: NOT FOUND', {
-                status: 404,
-                headers
+            return new Response('ERROR 404: PAGE NOT FOUND', {
+                status: 404
             });
         }
-
         catch (e: any) {
             return new Response("ERROR 502", { status: 502 });
         }
@@ -177,8 +175,5 @@ const host = Bun.serve({
         message(ws, message) { },
     }
 });
-
-
-
 
 console.log(`${(new Date).toLocaleTimeString()} http://${host.hostname}:${host.port}`);
